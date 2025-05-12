@@ -12,7 +12,7 @@ function renderRichText(blocks) {
     if (b.annotations.italic) text = `<em>${text}</em>`;
     if (b.annotations.underline) text = `<u>${text}</u>`;
     if (b.annotations.strikethrough) text = `<s>${text}</s>`;
-    if (b.href) text = `<a href="${b.href}" class="text-blue-600 underline">${text}</a>`;
+    if (b.href) text = `<a href=\"${b.href}\" class=\"text-blue-600 underline\">${text}</a>`;
     return text;
   }).join("");
 }
@@ -33,7 +33,8 @@ module.exports = async (req, res) => {
       UnitPrice: page.properties.UnitPrice?.number || 0,
       Amount: page.properties.Amount?.number ?? (
         (page.properties.Qty?.number || 0) * (page.properties.UnitPrice?.number || 0)
-      )
+      ),
+      Updated: page.last_edited_time || ""
     }));
 
     res.setHeader("Access-Control-Allow-Origin", "*");
