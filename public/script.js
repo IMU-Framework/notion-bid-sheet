@@ -89,7 +89,7 @@ function renderPage(groups, fullData) {
       summary.textContent = WorkType;
 
       const wrapper = document.createElement("div");
-      wrapper.className = "overflow-x-auto mt-0";
+      wrapper.className = "overflow-x-auto mt-1";
 
       const table = document.createElement("table");
       table.className = "w-full border border-gray-300 text-sm";
