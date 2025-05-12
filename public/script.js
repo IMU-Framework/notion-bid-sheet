@@ -40,24 +40,24 @@ function renderPage(groups, fullData) {
   let selectedTypes = new Set(activeWorkTypes);
 
   activeWorkTypes.forEach(type => {
-  const button = document.createElement("button");
-  button.textContent = type;
-  button.className = "px-3 py-1 text-sm rounded bg-gray-200";
-  button.dataset.type = type;
+    const button = document.createElement("button");
+    button.textContent = type;
+    button.className = "px-3 py-1 text-sm rounded bg-gray-200";
+    button.dataset.type = type;
 
-  button.addEventListener("click", () => {
-    if (selectedTypes.has(type)) {
-      selectedTypes.delete(type);
-      button.classList.add("line-through", "opacity-50");
-    } else {
-      selectedTypes.add(type);
-      button.classList.remove("line-through", "opacity-50");
-    }
-    renderTables();
+    button.addEventListener("click", () => {
+      if (selectedTypes.has(type)) {
+        selectedTypes.delete(type);
+        button.classList.add("line-through", "opacity-50");
+      } else {
+        selectedTypes.add(type);
+        button.classList.remove("line-through", "opacity-50");
+      }
+      renderTables();
+    });
+
+    filterBox.appendChild(button);
   });
-
-  filterBox.appendChild(button);
-});
 
   container.appendChild(filterBox);
 
@@ -89,10 +89,14 @@ function renderPage(groups, fullData) {
       summary.textContent = WorkType;
 
       const wrapper = document.createElement("div");
-      wrapper.className = "overflow-x-auto mt-2"; // ✅ 允許手機橫向捲動
+      wrapper.className = "overflow-x-auto mt-2";
 
       const table = document.createElement("table");
-      table.className = "w-full border border-gray-300 text-sm"; 
+      table.className = "w-full border border-gray-300 text-sm";
+
+      const groupTotal = items.reduce((sum, item) => sum + (item.Amount ?? 0), 0);
+      totalAmount += groupTotal;
+
       table.innerHTML = `
         <thead class="bg-gray-100">
           <tr>
@@ -119,7 +123,7 @@ function renderPage(groups, fullData) {
           `).join('')}
           <tr class="font-semibold bg-gray-50">
             <td colspan="6" class="text-right border px-2 py-1">小計</td>
-            summaryBox.innerHTML = `<strong>金額總計：</strong> ${formatMoney(totalAmount)}`;
+            <td class="border px-2 py-1 text-right">${formatMoney(groupTotal)}</td>
           </tr>
         </tbody>
       `;
@@ -128,9 +132,9 @@ function renderPage(groups, fullData) {
       section.appendChild(summary);
       section.appendChild(wrapper);
       tableContainer.appendChild(section);
-
     });
 
+    // ✅ 修正位置：放在 group loop 結束後
     summaryBox.innerHTML = `<strong>金額總計：</strong> ${formatMoney(totalAmount)}`;
   }
 
