@@ -100,12 +100,12 @@ function renderPage(groups, fullData) {
         <thead class="bg-gray-100">
           <tr>
             <th class="border px-2 py-1 w-[32px]">#</th>
-            <th class="border px-2 py-1 min-w-[4em] w-[15%] whitespace-nowrap">工程項目</th>
-            <th class="border px-2 py-1 w-[40%]">規格描述</th>
-            <th class="border px-2 py-1 text-right w-min whitespace-nowrap">數量</th>
-            <th class="border px-2 py-1 w-min whitespace-nowrap">單位</th>
-            <th class="border px-2 py-1 text-right w-min whitespace-nowrap">單價</th>
-            <th class="border px-2 py-1 text-right w-min whitespace-nowrap">價格</th>
+            <th class="border px-2 py-1 min-w-[4em] w-[15%]">工程項目</th>
+            <th class="border px-2 py-1 w-[20%]">規格描述</th>
+            <th class="border px-2 py-1 text-right w-min">數量</th>
+            <th class="border px-2 py-1 w-min ">單位</th>
+            <th class="border px-2 py-1 text-right w-min">單價</th>
+            <th class="border px-2 py-1 text-right w-min">價格</th>
           </tr>
         </thead>
         <tbody>
