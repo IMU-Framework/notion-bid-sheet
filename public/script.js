@@ -101,7 +101,7 @@ function renderPage(groups, fullData) {
         <thead class="bg-gray-100">
           <tr>
             <th class="border px-2 py-1 w-[20px]">#</th>
-            <th class="border px-2 py-1 min-w-[4em] w-[20%]">工程項目</th>
+            <th class="border px-2 py-1 min-w-[4em] w-[16%]">工程項目</th>
             <th class="border px-2 py-1 w-[35%]">規格描述</th>
             <th class="border px-2 py-1 text-right w-[45px]">數量</th>
             <th class="border px-2 py-1 w-[40px]">單位</th>
