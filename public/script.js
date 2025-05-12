@@ -5,12 +5,14 @@ fetch("/api/bid")
     return res.json();
   })
   .then(data => {
+    // 預先過濾掉 Item 為空的資料
+    data = data.filter(d => d.Item && d.Item.trim() !== "");
     const grouped = groupBy(data, 'WorkType');
     renderPage(grouped, data);
   })
   .catch(err => {
     const container = document.getElementById('table-container');
-    container.innerHTML = `<p class="text-red-600">❌ 資料載入失敗：${err.message}</p>`;
+    container.innerHTML = `<p class=\"text-red-600\">❌ 資料載入失敗：${err.message}</p>`;
     console.error("❌ 發生錯誤：", err);
   });
 
@@ -35,31 +37,37 @@ function renderPage(groups, fullData) {
   container.innerHTML = "";
   const updateDate = fullData[0]?.Updated?.slice(0, 10) || "";
 
-  // 建立篩選器 UI：每個工種都可個別打開/關閉
+  // 建立按鈕篩選器 UI
   const filterBox = document.createElement("div");
-  filterBox.className = "mb-4 flex flex-wrap gap-4 items-center";
+  filterBox.className = "mb-4 flex flex-wrap gap-2 items-center";
 
   const activeWorkTypes = Object.keys(groups).filter(type => groups[type].length > 0);
   let selectedTypes = new Set(activeWorkTypes);
 
   activeWorkTypes.forEach(type => {
-    const label = document.createElement("label");
-    label.className = "flex items-center gap-1 text-sm";
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.checked = true;
-    checkbox.dataset.type = type;
-    checkbox.addEventListener("change", () => {
-      if (checkbox.checked) {
-        selectedTypes.add(type);
-      } else {
+    const btn = document.createElement("button");
+    btn.textContent = type;
+    btn.className = "text-sm px-3 py-1 border rounded bg-gray-200 hover:bg-gray-300";
+    btn.dataset.type = type;
+    btn.dataset.selected = "true";
+
+    btn.addEventListener("click", () => {
+      const isSelected = btn.dataset.selected === "true";
+      if (isSelected) {
         selectedTypes.delete(type);
+        btn.classList.remove("bg-gray-200");
+        btn.classList.add("bg-white", "text-gray-400", "line-through");
+        btn.dataset.selected = "false";
+      } else {
+        selectedTypes.add(type);
+        btn.classList.remove("bg-white", "text-gray-400", "line-through");
+        btn.classList.add("bg-gray-200");
+        btn.dataset.selected = "true";
       }
       renderTables();
     });
-    label.appendChild(checkbox);
-    label.appendChild(document.createTextNode(type));
-    filterBox.appendChild(label);
+
+    filterBox.appendChild(btn);
   });
 
   container.appendChild(filterBox);
@@ -89,7 +97,7 @@ function renderPage(groups, fullData) {
 
       const section = document.createElement("details");
       section.setAttribute("open", "true");
-      section.className = "avoid-break";
+      section.className = "avoid-break mt-6";
 
       const summary = document.createElement("summary");
       summary.className = "cursor-pointer font-semibold bg-gray-100 px-4 py-2 rounded";
