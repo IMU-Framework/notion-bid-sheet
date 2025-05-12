@@ -40,26 +40,24 @@ function renderPage(groups, fullData) {
   let selectedTypes = new Set(activeWorkTypes);
 
   activeWorkTypes.forEach(type => {
-    const label = document.createElement("label");
-    label.className = "flex items-center gap-1 text-sm";
-    const button = document.createElement("button");
-    button.className = "btn-type selected px-4 py-2 bg-gray-200 rounded";
-    button.textContent = type;
-    button.dataset.type = type;
-    button.addEventListener("click", () => {
-      if (selectedTypes.has(type)) {
-        selectedTypes.delete(type);
-        button.classList.remove("bg-blue-500", "text-white");
-        button.classList.add("bg-gray-200", "text-black");
-      } else {
-        selectedTypes.add(type);
-        button.classList.add("bg-blue-500", "text-white");
-        button.classList.remove("bg-gray-200", "text-black");
-      }
-      renderTables();
-    });
-    filterBox.appendChild(button);
+  const button = document.createElement("button");
+  button.textContent = type;
+  button.className = "px-3 py-1 text-sm rounded bg-gray-200";
+  button.dataset.type = type;
+
+  button.addEventListener("click", () => {
+    if (selectedTypes.has(type)) {
+      selectedTypes.delete(type);
+      button.classList.add("line-through", "opacity-50");
+    } else {
+      selectedTypes.add(type);
+      button.classList.remove("line-through", "opacity-50");
+    }
+    renderTables();
   });
+
+  filterBox.appendChild(button);
+});
 
   container.appendChild(filterBox);
 
