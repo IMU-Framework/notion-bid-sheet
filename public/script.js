@@ -69,7 +69,7 @@ function renderPage(groups, fullData) {
   container.appendChild(tableContainer);
 
   const updateTag = document.createElement("p");
-  updateTag.className = "print-fixed-top-right text-xs text-gray-400";
+  updateTag.className = "text-xs text-gray-400 text-right sticky top-0 z-50 bg-white pr-4";
   updateTag.textContent = `最後更新時間：${updateDate}`;
   container.appendChild(updateTag);
 
@@ -85,7 +85,7 @@ function renderPage(groups, fullData) {
       section.className = "avoid-break";
 
       const summary = document.createElement("summary");
-      summary.className = "cursor-pointer font-semibold bg-gray-100 px-4 py-2 rounded";
+      summary.className = "mt-4 cursor-pointer font-semibold bg-gray-100 px-4 py-2 rounded";
       summary.textContent = WorkType;
 
       const wrapper = document.createElement("div");
@@ -101,7 +101,7 @@ function renderPage(groups, fullData) {
         <thead class="bg-gray-100">
           <tr>
             <th class="border px-2 py-1 w-[20px]">#</th>
-            <th class="border px-2 py-1 min-w-[5.5em] w-[25%] whitespace-nowrap">工程項目</th>
+            <th class="border px-2 py-1 min-w-[4.5em] w-[25%]">工程項目</th>
             <th class="border px-2 py-1 w-[35%]">規格描述</th>
             <th class="border px-2 py-1 text-right w-[45px]">數量</th>
             <th class="border px-2 py-1 w-[40px]">單位</th>
