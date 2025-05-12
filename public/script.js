@@ -27,7 +27,7 @@ function renderTable(groups) {
   const container = document.getElementById('table-container');
   container.innerHTML = "";
 
-  Object.entries(groups).forEach(([workType, items]) => {
+  Object.entries(groups).forEach(([WorkType, items]) => {
     const table = document.createElement('table');
     table.className = "w-full border border-gray-300 text-sm";
     table.innerHTML = `
@@ -58,7 +58,7 @@ function renderTable(groups) {
     `;
 
     const section = document.createElement('section');
-    section.innerHTML = `<h2 class="font-bold text-lg my-2">${workType}</h2>`;
+    section.innerHTML = `<h2 class="font-bold text-lg my-2">${WorkType}</h2>`;
     section.appendChild(table);
     container.appendChild(section);
   });
