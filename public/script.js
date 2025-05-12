@@ -5,11 +5,11 @@ fetch("/api/bid")
   })
   .then(data => {
     const grouped = groupBy(data, 'WorkType');
-    renderTable(grouped);
+    renderPage(grouped, data);
   })
   .catch(err => {
     const container = document.getElementById('table-container');
-    container.innerHTML = `<p class="text-red-600">❌ 資料載入失敗：${err.message}</p>`;
+    container.innerHTML = `<p class=\"text-red-600\">❌ 資料載入失敗：${err.message}</p>`;
     console.error("❌ 發生錯誤：", err);
   });
 
@@ -26,9 +26,17 @@ function formatMoney(n) {
   return `$${n.toLocaleString("en-US")}`;
 }
 
-function renderTable(groups) {
+function renderPage(groups, fullData) {
   const container = document.getElementById('table-container');
   container.innerHTML = "";
+
+  const totalAmount = fullData.reduce((sum, item) => sum + (item.Amount ?? 0), 0);
+  const updateDate = fullData[0]?.Updated?.slice(0, 10) || "";
+
+  const summaryBox = document.createElement("div");
+  summaryBox.className = "text-right text-sm text-gray-600 mb-2";
+  summaryBox.innerHTML = `💰 <strong>全部工種總計：</strong> ${formatMoney(totalAmount)}`;
+  container.appendChild(summaryBox);
 
   Object.entries(groups).forEach(([WorkType, items]) => {
     const section = document.createElement("details");
@@ -41,6 +49,8 @@ function renderTable(groups) {
 
     const wrapper = document.createElement("div");
     wrapper.className = "overflow-x-auto mt-2";
+
+    const groupTotal = items.reduce((sum, item) => sum + (item.Amount ?? 0), 0);
 
     const table = document.createElement("table");
     table.className = "w-full border border-gray-300 text-sm";
@@ -68,6 +78,10 @@ function renderTable(groups) {
             <td class="border px-2 py-1 text-right">${formatMoney(item.Amount)}</td>
           </tr>
         `).join('')}
+        <tr class="font-semibold bg-gray-50">
+          <td colspan="6" class="text-right border px-2 py-1">小計</td>
+          <td class="border px-2 py-1 text-right">${formatMoney(groupTotal)}</td>
+        </tr>
       </tbody>
     `;
 
@@ -76,4 +90,9 @@ function renderTable(groups) {
     section.appendChild(wrapper);
     container.appendChild(section);
   });
+
+  const footer = document.createElement("p");
+  footer.className = "mt-6 text-sm text-right text-gray-500";
+  footer.textContent = `最後更新時間：${updateDate}`;
+  container.appendChild(footer);
 }
