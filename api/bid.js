@@ -1,30 +1,85 @@
+// Notion 標單查詢 API：讀取 Notion Database，並輸出整理後的項目清單，供前端渲染使用
+
 const { Client } = require("@notionhq/client");
 
+// 初始化 Notion 客戶端
 const notion = new Client({ auth: process.env.NOTION_TOKEN });
 const databaseId = process.env.NOTION_DATABASE_ID;
 
+// 將 rich_text 陣列轉為 HTML，支援基本樣式、換行與顏色
 function renderRichText(blocks) {
   return blocks.map(b => {
-    let text = b.plain_text || "";
+    let text = b.plain_text;
+    if (!text) return "";
+
+    // 換行處理
     text = text.replace(/\n/g, "<br>");
+
+    // 樣式處理
     if (b.annotations.code) text = `<code>${text}</code>`;
     if (b.annotations.bold) text = `<strong>${text}</strong>`;
     if (b.annotations.italic) text = `<em>${text}</em>`;
     if (b.annotations.underline) text = `<u>${text}</u>`;
     if (b.annotations.strikethrough) text = `<s>${text}</s>`;
-    if (b.href) text = `<a href=\"${b.href}\" class=\"text-blue-600 underline\">${text}</a>`;
+
+    // 顏色處理（使用 inline style）
+    const color = b.annotations.color;
+    let style = "";
+
+    if (color.endsWith("_background")) {
+      const base = color.replace("_background", "");
+      style += `background-color: ${getCssColor(base, true)}; color: black;`;
+    } else if (color !== "default") {
+      style += `color: ${getCssColor(color)};`;
+    }
+
+    if (style) {
+      text = `<span style="${style}">${text}</span>`;
+    }
+
+    // 連結處理
+    if (b.href) {
+      text = `<a href="${b.href}" target="_blank" class="underline text-blue-600">${text}</a>`;
+    }
+
     return text;
   }).join("");
 }
 
+// 對應 Notion 顏色名稱轉 CSS 色碼
+function getCssColor(name, isBg = false) {
+  const map = {
+    gray: "#6B7280", red: "#DC2626", yellow: "#FBBF24", green: "#16A34A",
+    blue: "#2563EB", purple: "#7C3AED", pink: "#EC4899", brown: "#92400E",
+  };
+  const bgMap = {
+    gray: "#E5E7EB", red: "#FECACA", yellow: "#FEF3C7", green: "#D1FAE5",
+    blue: "#DBEAFE", purple: "#EDE9FE", pink: "#FCE7F3", brown: "#F3E8E0",
+  };
+  return isBg ? (bgMap[name] || "#F3F4F6") : (map[name] || "#111827");
+}
+
+// API handler
 module.exports = async (req, res) => {
   try {
-    const response = await notion.databases.query({
-      database_id: databaseId,
-      sorts: [{ timestamp: "created_time", direction: "ascending" }],
-    });
+    // 支援分頁抓取所有資料（Notion 預設每頁最多 100 筆）
+    let allResults = [];
+    let cursor = undefined;
 
-    const results = response.results.map((page) => ({
+    do {
+      const response = await notion.databases.query({
+        database_id: databaseId,
+        start_cursor: cursor,
+        page_size: 100,
+        sorts: [{ timestamp: "created_time", direction: "ascending" }],
+      });
+
+      allResults.push(...response.results);
+      cursor = response.has_more ? response.next_cursor : null;
+    } while (cursor);
+
+    // 整理欄位：對應 Notion DB 欄位，若無值則 fallback 處理
+    const results = allResults.map((page) => ({
       WorkType: page.properties.WorkType?.select?.name || "",
       Item: page.properties.Item?.title?.[0]?.plain_text || "",
       Spec: renderRichText(page.properties.Spec?.rich_text || []),
