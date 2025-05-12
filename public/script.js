@@ -4,7 +4,6 @@ fetch("/api/bid")
     return res.json();
   })
   .then(data => {
-    console.log("📦 Notion 回傳資料：", data);
     const grouped = groupBy(data, 'WorkType');
     renderTable(grouped);
   })
@@ -23,12 +22,27 @@ function groupBy(arr, key) {
   }, {});
 }
 
+function formatMoney(n) {
+  return `$${n.toLocaleString("en-US")}`;
+}
+
 function renderTable(groups) {
   const container = document.getElementById('table-container');
   container.innerHTML = "";
 
   Object.entries(groups).forEach(([WorkType, items]) => {
-    const table = document.createElement('table');
+    const section = document.createElement("details");
+    section.setAttribute("open", "true");
+    section.className = "avoid-break";
+
+    const summary = document.createElement("summary");
+    summary.className = "cursor-pointer font-semibold bg-gray-100 px-4 py-2 rounded";
+    summary.textContent = WorkType;
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "overflow-x-auto mt-2";
+
+    const table = document.createElement("table");
     table.className = "w-full border border-gray-300 text-sm";
     table.innerHTML = `
       <thead class="bg-gray-100">
@@ -46,20 +60,20 @@ function renderTable(groups) {
         ${items.map((item, i) => `
           <tr>
             <td class="border px-2 py-1 text-center">${i + 1}</td>
-            <td class="border px-2 py-1">${item.Item || ""}</td>
-            <td class="border px-2 py-1">${item.Spec || ""}</td>
+            <td class="border px-2 py-1">${item.Item}</td>
+            <td class="border px-2 py-1">${item.Spec}</td>
             <td class="border px-2 py-1 text-right">${item.Qty}</td>
             <td class="border px-2 py-1">${item.Unit}</td>
-            <td class="border px-2 py-1 text-right">${item.UnitPrice}</td>
-            <td class="border px-2 py-1 text-right">${item.Amount}</td>
+            <td class="border px-2 py-1 text-right">${formatMoney(item.UnitPrice)}</td>
+            <td class="border px-2 py-1 text-right">${formatMoney(item.Amount)}</td>
           </tr>
         `).join('')}
       </tbody>
     `;
 
-    const section = document.createElement('section');
-    section.innerHTML = `<h2 class="font-bold text-lg my-2">${WorkType}</h2>`;
-    section.appendChild(table);
+    wrapper.appendChild(table);
+    section.appendChild(summary);
+    section.appendChild(wrapper);
     container.appendChild(section);
   });
 }
