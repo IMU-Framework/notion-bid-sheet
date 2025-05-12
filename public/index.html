@@ -10,17 +10,19 @@
       body {
         width: 210mm;
         height: 297mm;
-        margin: 16mm;
+        margin: 25mm 20mm 25mm 20mm !important;
+        padding: 0;
+        box-sizing: border-box;
       }
       .print-a4 {
         page-break-after: always;
       }
+      thead {
+        display: table-header-group;
+      }
       .avoid-break {
         break-inside: avoid;
         page-break-inside: avoid;
-      }
-      thead {
-        display: table-header-group;
       }
     }
   </style>
