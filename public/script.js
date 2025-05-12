@@ -89,23 +89,20 @@ function renderPage(groups, fullData) {
       summary.textContent = WorkType;
 
       const wrapper = document.createElement("div");
-      wrapper.className = "overflow-x-auto mt-2";
-
-      const groupTotal = items.reduce((sum, item) => sum + (item.Amount ?? 0), 0);
-      totalAmount += groupTotal;
+      wrapper.className = "overflow-x-auto mt-2"; // ✅ 允許手機橫向捲動
 
       const table = document.createElement("table");
-      table.className = "table-fixed w-full border border-gray-300 text-sm";
+      table.className = "w-full border border-gray-300 text-sm"; 
       table.innerHTML = `
         <thead class="bg-gray-100">
           <tr>
-            <th class="border px-2 py-1 w-[32px]">#</th>
-            <th class="border px-2 py-1 min-w-[4em] w-[15%]">工程項目</th>
-            <th class="border px-2 py-1 w-[20%]">規格描述</th>
-            <th class="border px-2 py-1 text-right w-min">數量</th>
-            <th class="border px-2 py-1 w-min ">單位</th>
-            <th class="border px-2 py-1 text-right w-min">單價</th>
-            <th class="border px-2 py-1 text-right w-min">價格</th>
+            <th class="border px-2 py-1 w-[20px]">#</th>
+            <th class="border px-2 py-1 min-w-[5.5em] w-[25%] whitespace-nowrap">工程項目</th>
+            <th class="border px-2 py-1 w-[35%]">規格描述</th>
+            <th class="border px-2 py-1 text-right w-[45px]">數量</th>
+            <th class="border px-2 py-1 w-[40px]">單位</th>
+            <th class="border px-2 py-1 text-right w-[65px]">單價</th>
+            <th class="border px-2 py-1 text-right w-[80px]">價格</th>
           </tr>
         </thead>
         <tbody>
@@ -131,6 +128,7 @@ function renderPage(groups, fullData) {
       section.appendChild(summary);
       section.appendChild(wrapper);
       tableContainer.appendChild(section);
+
     });
 
     summaryBox.innerHTML = `<strong>金額總計：</strong> ${formatMoney(totalAmount)}`;
