@@ -95,13 +95,6 @@ function renderPage(groups, fullData) {
     Object.entries(groups).forEach(([WorkType, items]) => {
       if (!selectedTypes.has(WorkType) || items.length === 0) return;
 
-      // 如果該組資料筆數小於 3，則強制換頁開始新段落
-      if (items.length < 3) {
-        const breakDiv = document.createElement("div");
-        breakDiv.className = "break-before-page";
-        tableContainer.appendChild(breakDiv);
-      }
-
       const section = document.createElement("details");
       section.setAttribute("open", "true"); // 預設展開，也供列印樣式強制展開
       section.className = "avoid-break mt-6";
