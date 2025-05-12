@@ -37,6 +37,12 @@ function renderPage(groups, fullData) {
   container.innerHTML = "";
   const updateDate = fullData[0]?.Updated?.slice(0, 10) || "";
 
+  // 更新時間區塊固定在右上角（列印與畫面共用）
+  const updateTag = document.createElement("p");
+  updateTag.className = "print-fixed-top-right text-xs text-gray-400";
+  updateTag.textContent = `最後更新時間：${updateDate}`;
+  container.appendChild(updateTag);
+
   // 建立按鈕篩選器 UI
   const filterBox = document.createElement("div");
   filterBox.className = "mb-4 flex flex-wrap gap-2 items-center";
@@ -81,12 +87,6 @@ function renderPage(groups, fullData) {
   const tableContainer = document.createElement("div");
   container.appendChild(tableContainer);
 
-  // 更新時間區塊固定在右上角
-  const updateTag = document.createElement("p");
-  updateTag.className = "absolute top-4 right-6 text-xs text-gray-400 print:relative print:top-4 print:right-6 print:text-right";
-  updateTag.textContent = `最後更新時間：${updateDate}`;
-  container.appendChild(updateTag);
-
   // 子函式：根據勾選的工種重新渲染表格與總計
   function renderTables() {
     tableContainer.innerHTML = "";
@@ -95,8 +95,15 @@ function renderPage(groups, fullData) {
     Object.entries(groups).forEach(([WorkType, items]) => {
       if (!selectedTypes.has(WorkType) || items.length === 0) return;
 
+      // 如果該組資料筆數小於 3，則強制換頁開始新段落
+      if (items.length < 3) {
+        const breakDiv = document.createElement("div");
+        breakDiv.className = "break-before-page";
+        tableContainer.appendChild(breakDiv);
+      }
+
       const section = document.createElement("details");
-      section.setAttribute("open", "true");
+      section.setAttribute("open", "true"); // 預設展開，也供列印樣式強制展開
       section.className = "avoid-break mt-6";
 
       const summary = document.createElement("summary");
