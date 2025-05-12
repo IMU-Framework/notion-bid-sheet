@@ -31,7 +31,9 @@ module.exports = async (req, res) => {
       Qty: page.properties.Qty?.number || 0,
       Unit: page.properties.Unit?.rich_text?.[0]?.plain_text || "",
       UnitPrice: page.properties.UnitPrice?.number || 0,
-      Amount: page.properties.Amount?.number || 0,
+      Amount: page.properties.Amount?.number ?? (
+        (page.properties.Qty?.number || 0) * (page.properties.UnitPrice?.number || 0)
+      )
     }));
 
     res.setHeader("Access-Control-Allow-Origin", "*");
