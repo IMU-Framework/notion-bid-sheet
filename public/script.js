@@ -100,7 +100,7 @@ function renderPage(groups, fullData) {
         <thead class="bg-gray-100">
           <tr>
             <th class="border px-2 py-1 w-[32px]">#</th>
-            <th class="border px-2 py-1 min-w-[5.5em] w-[20%] whitespace-nowrap">工程項目</th>
+            <th class="border px-2 py-1 min-w-[4em] w-[15%] whitespace-nowrap">工程項目</th>
             <th class="border px-2 py-1 w-[40%]">規格描述</th>
             <th class="border px-2 py-1 text-right w-min whitespace-nowrap">數量</th>
             <th class="border px-2 py-1 w-min whitespace-nowrap">單位</th>
