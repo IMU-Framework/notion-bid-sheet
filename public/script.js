@@ -1,20 +1,32 @@
 fetch("/api/bid")
-  .then(res => res.json())
+  .then(res => {
+    if (!res.ok) throw new Error("API 錯誤，狀態碼：" + res.status);
+    return res.json();
+  })
   .then(data => {
-    const grouped = groupBy(data, 'workType');
+    console.log("📦 Notion 回傳資料：", data);
+    const grouped = groupBy(data, 'WorkType');
     renderTable(grouped);
+  })
+  .catch(err => {
+    const container = document.getElementById('table-container');
+    container.innerHTML = `<p class="text-red-600">❌ 資料載入失敗：${err.message}</p>`;
+    console.error("❌ 發生錯誤：", err);
   });
 
 function groupBy(arr, key) {
   return arr.reduce((acc, cur) => {
-    acc[cur[key]] = acc[cur[key]] || [];
-    acc[cur[key]].push(cur);
+    const group = cur[key] || "未分類";
+    acc[group] = acc[group] || [];
+    acc[group].push(cur);
     return acc;
   }, {});
 }
 
 function renderTable(groups) {
   const container = document.getElementById('table-container');
+  container.innerHTML = "";
+
   Object.entries(groups).forEach(([workType, items]) => {
     const table = document.createElement('table');
     table.className = "w-full border border-gray-300 text-sm";
@@ -34,22 +46,17 @@ function renderTable(groups) {
         ${items.map((item, i) => `
           <tr>
             <td class="border px-2 py-1 text-center">${i + 1}</td>
-            <td class="border px-2 py-1">${item.item}</td>
-            <td class="border px-2 py-1">${item.spec}</td>
-            <td class="border px-2 py-1 text-right">${item.qty}</td>
-            <td class="border px-2 py-1">${item.unit}</td>
-            <td class="border px-2 py-1 text-right">${item.unitPrice}</td>
-            <td class="border px-2 py-1 text-right">${item.qty * item.unitPrice}</td>
+            <td class="border px-2 py-1">${item.Item || ""}</td>
+            <td class="border px-2 py-1">${item.Spec || ""}</td>
+            <td class="border px-2 py-1 text-right">${item.Qty}</td>
+            <td class="border px-2 py-1">${item.Unit}</td>
+            <td class="border px-2 py-1 text-right">${item.UnitPrice}</td>
+            <td class="border px-2 py-1 text-right">${item.Amount}</td>
           </tr>
         `).join('')}
-        <tr class="font-semibold bg-gray-50">
-          <td colspan="6" class="text-right border px-2 py-1">小計</td>
-          <td class="border px-2 py-1 text-right">
-            ${items.reduce((sum, item) => sum + item.qty * item.unitPrice, 0)}
-          </td>
-        </tr>
       </tbody>
     `;
+
     const section = document.createElement('section');
     section.innerHTML = `<h2 class="font-bold text-lg my-2">${workType}</h2>`;
     section.appendChild(table);
