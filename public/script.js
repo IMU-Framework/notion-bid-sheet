@@ -85,11 +85,11 @@ function renderPage(groups, fullData) {
       section.className = "avoid-break";
 
       const summary = document.createElement("summary");
-      summary.className = "mt-4 cursor-pointer font-semibold bg-gray-100 px-4 py-2 rounded";
+      summary.className = "mt-4 cursor-pointer font-semibold bg-gray-100 px-4 py-1 rounded";
       summary.textContent = WorkType;
 
       const wrapper = document.createElement("div");
-      wrapper.className = "overflow-x-auto mt-2";
+      wrapper.className = "overflow-x-auto mt-0";
 
       const table = document.createElement("table");
       table.className = "w-full border border-gray-300 text-sm";
