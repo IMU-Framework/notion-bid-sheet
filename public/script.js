@@ -83,8 +83,7 @@ function renderPage(groups, fullData) {
 
   // 更新時間區塊固定在右上角
   const updateTag = document.createElement("p");
-  // updateTag.className = "absolute top-4 right-6 text-xs text-gray-400 print:relative print:top-0 print:right-0 print:text-right";
-  updateTag.className = "print-fixed-top-right text-xs text-gray-400";
+  updateTag.className = "absolute top-4 right-6 text-xs text-gray-400 print:relative print:top-4 print:right-6 print:text-right";
   updateTag.textContent = `最後更新時間：${updateDate}`;
   container.appendChild(updateTag);
 
