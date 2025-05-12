@@ -5,42 +5,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>標單表格</title>
   <script src="https://cdn.tailwindcss.com"></script>
-<style>
-  @media print {
-    @page {
-      size: A4;
-      margin: 15mm 14mm 15mm 14mm; /* moderate 邊界 */
+  <style>
+    @media print {
+      @page {
+        size: A4;
+        margin: 15mm 14mm 15mm 14mm; /* moderate 邊界 */
+      }
+      body {
+        margin: 0 !important;
+        -webkit-print-color-adjust: exact;
+      }
+      summary::marker,
+      summary::-webkit-details-marker {
+        display: none;
+      }
+      details:not([open]) {
+        display: block !important;
+      }
+      .print-fixed-top-right {
+        position: fixed;
+        top: 20mm;
+        right: 20mm;
+        font-size: 12px;
+        color: #999;
+        text-align: right;
+      }
+      .break-before-page {
+        page-break-before: always;
+      }
+      body {
+        counter-reset: page;
+      }
+      .page-number:after {
+        content: "頁 " counter(page);
+        position: fixed;
+        bottom: 10mm;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 12px;
+        color: #999;
+      }
+      .page-number {
+        display: block;
+      }
     }
-    body {
-      margin: 0 !important;
-      -webkit-print-color-adjust: exact;
-    }
-    summary::marker,
-    summary::-webkit-details-marker {
-      display: none;
-    }
-    details:not([open]) {
-      display: block !important; /* 強制展開 toggle */
-    }
-    .print-fixed-top-right {
-      position: fixed;
-      top: 20mm;
-      right: 20mm;
-      font-size: 12px;
-      color: #999;
-      text-align: right;
-    }
-    .break-before-page {
-      page-break-before: always;
-    }
-  }
-</style>
+  </style>
 </head>
 <body class="bg-white text-gray-800 p-4">
   <div class="max-w-5xl mx-auto print-a4 space-y-4">
     <h1 class="text-2xl font-bold mb-6 text-center">工程標單表格</h1>
     <div id="table-container" class="space-y-4"></div>
   </div>
+  <div class="page-number"></div>
   <script src="script.js"></script>
 </body>
 </html>
