@@ -25,12 +25,13 @@ module.exports = async (req, res) => {
     });
 
     const results = response.results.map((page) => ({
-      workType: page.properties.WorkType?.select?.name || "",
-      item: page.properties.Item?.title?.[0]?.plain_text || "",
-      spec: renderRichText(page.properties.Spec?.rich_text || []),
-      qty: page.properties.Qty?.number || 0,
-      unit: page.properties.Unit?.rich_text?.[0]?.plain_text || "",
-      unitPrice: page.properties.UnitPrice?.number || 0,
+      WorkType: page.properties.WorkType?.select?.name || "",
+      Item: page.properties.Item?.title?.[0]?.plain_text || "",
+      Spec: renderRichText(page.properties.Spec?.rich_text || []),
+      Qty: page.properties.Qty?.number || 0,
+      Unit: page.properties.Unit?.rich_text?.[0]?.plain_text || "",
+      UnitPrice: page.properties.UnitPrice?.number || 0,
+      Amount: page.properties.Amount?.number || 0,
     }));
 
     res.setHeader("Access-Control-Allow-Origin", "*");
