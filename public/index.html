@@ -14,7 +14,6 @@
       body {
         margin: 0 !important;
         -webkit-print-color-adjust: exact;
-        counter-reset: page;
       }
       summary::marker,
       summary::-webkit-details-marker {
@@ -22,26 +21,6 @@
       }
       details:not([open]) {
         display: block !important;
-      }
-      .print-fixed-top-right {
-        position: fixed;
-        top: 20mm;
-        right: 20mm;
-        font-size: 12px;
-        color: #999;
-        text-align: right;
-      }
-      .page-number:after {
-        content: "頁 " counter(page);
-        position: fixed;
-        bottom: 10mm;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 12px;
-        color: #999;
-      }
-      .page-number {
-        display: block;
       }
     }
   </style>
@@ -51,7 +30,6 @@
     <h1 class="text-2xl font-bold mb-6 text-center">工程標單表格</h1>
     <div id="table-container" class="space-y-4"></div>
   </div>
-  <div class="page-number"></div>
   <script src="script.js"></script>
 </body>
 </html>
