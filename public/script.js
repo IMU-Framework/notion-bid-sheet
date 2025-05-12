@@ -119,7 +119,7 @@ function renderPage(groups, fullData) {
           `).join('')}
           <tr class="font-semibold bg-gray-50">
             <td colspan="6" class="text-right border px-2 py-1">小計</td>
-            <td class="border px-2 py-1 text-right">${formatMoney(groupTotal)}</td>
+            summaryBox.innerHTML = `<strong>金額總計：</strong> ${formatMoney(totalAmount)}`;
           </tr>
         </tbody>
       `;
