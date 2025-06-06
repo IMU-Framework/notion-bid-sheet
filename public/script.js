@@ -3,9 +3,12 @@ fetch("/api/bid")
     if (!res.ok) throw new Error("API 錯誤，狀態碼：" + res.status);
     return res.json();
   })
-  .then(({ dbTitle, items }) => {
-    document.title = dbTitle; // ✅ 同步 <title>
-    document.querySelector("h1").textContent = dbTitle;
+  .then(({ dbTitle, dbDescription, items }) => {
+  document.title = dbTitle;
+  document.querySelector("h1").textContent = dbTitle;
+
+  const descEl = document.getElementById("db-description");
+  if (descEl) descEl.textContent = dbDescription;
     const grouped = groupBy(items, 'WorkType');
     renderPage(grouped);
   })
