@@ -124,7 +124,7 @@ function renderPage(groups) {
               <td class="border px-2 py-1 text-center">${i + 1}</td>
               <td class="border px-2 py-1">${item.Item}</td>
               <td class="border px-2 py-1">${item.Spec}</td>
-              <td class="border px-2 py-1 text-right">${item.Qty}</td>
+              <td class="border px-2 py-1 text-right ${item.Qty == null ? 'text-gray-400 italic' : ''}">${item.Qty == null ? '待定' : item.Qty}</td>
               <td class="border px-2 py-1">${item.Unit}</td>
               <td class="border px-2 py-1 text-right">${formatMoney(item.UnitPrice)}</td>
               <td class="border px-2 py-1 text-right">${formatMoney(item.Amount)}</td>
