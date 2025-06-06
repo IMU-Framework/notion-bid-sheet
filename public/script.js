@@ -8,7 +8,7 @@ fetch("/api/bid")
   document.querySelector("h1").textContent = dbTitle;
 
   const descEl = document.getElementById("db-description");
-  if (descEl) descEl.textContent = dbDescription;
+  if (descEl) descEl.innerHTML = dbDescription;
     const grouped = groupBy(items, 'WorkType');
     renderPage(grouped);
   })
