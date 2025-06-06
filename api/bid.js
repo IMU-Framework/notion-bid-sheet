@@ -87,7 +87,7 @@ module.exports = async (req, res) => {
       WorkType: page.properties.WorkType?.select?.name || "",
       Item: page.properties.Item?.title?.[0]?.plain_text || "",
       Spec: renderRichText(page.properties.Spec?.rich_text || []),
-      Qty: page.properties.Qty?.number || 0,
+      Qty: page.properties.Qty?.number ?? null,
       Unit: page.properties.Unit?.rich_text?.[0]?.plain_text || "",
       UnitPrice: page.properties.UnitPrice?.number || 0,
       Amount: page.properties.Amount?.number ?? (
