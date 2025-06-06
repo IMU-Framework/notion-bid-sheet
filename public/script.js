@@ -83,8 +83,9 @@ function renderPage(groups) {
   function renderTables() {
     tableContainer.innerHTML = "";
     let totalAmount = 0;
+    let visibleGroupCount = 0;
 
-    Object.entries(groups).forEach(([WorkType, items], index) => {
+    Object.entries(groups).forEach(([WorkType, items]) => {
       if (!selectedTypes.has(WorkType) || items.length === 0) return;
 
       const sortedItems = [...items].sort((a, b) => {
@@ -100,7 +101,8 @@ function renderPage(groups) {
 
       const summary = document.createElement("summary");
       summary.className = "mt-4 cursor-pointer font-semibold bg-gray-100 px-4 py-1 rounded";
-      summary.textContent = `${chineseNumbers[index] || (index + 1)}、${WorkType}`;
+      summary.textContent = `${chineseNumbers[visibleGroupCount] || (visibleGroupCount + 1)}、${WorkType}`;
+      visibleGroupCount++;
 
       const wrapper = document.createElement("div");
       wrapper.className = "overflow-x-auto mt-1";
