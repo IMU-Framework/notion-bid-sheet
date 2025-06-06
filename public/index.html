@@ -6,24 +6,42 @@
   <title>標單表格</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @media print {
-      @page {
-        size: A4;
-        margin: 15mm 14mm 15mm 14mm; /* moderate 邊界 */
-      }
-      body {
-        margin: 0 !important;
-        -webkit-print-color-adjust: exact;
-      }
-      summary::marker,
-      summary::-webkit-details-marker {
-        display: none;
-      }
-      details:not([open]) {
-        display: block !important;
-      }
+  @media print {
+    @page {
+      size: A4;
+      margin: 15mm 14mm 15mm 14mm; /* moderate 邊界 */
     }
-  </style>
+    body {
+      margin: 0 !important;
+      -webkit-print-color-adjust: exact;
+    }
+    summary::marker,
+    summary::-webkit-details-marker {
+      display: none;
+    }
+    details:not([open]) {
+      display: block !important;
+    }
+
+    /* ✅ 避免群組斷頁，只顯示表頭無項目 */
+    details.avoid-break {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    /* ✅ 保護表格表頭與第一列不被拆開 */
+    table {
+      page-break-inside: auto;
+    }
+    thead {
+      display: table-header-group;
+    }
+    tr {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+  }
+</style>
 </head>
 <body class="bg-white text-gray-800 p-4">
   <div class="max-w-5xl mx-auto print-a4 space-y-4">
