@@ -65,6 +65,8 @@ module.exports = async (req, res) => {
     // 讀取 Notion 資料庫名稱
     const dbMeta = await notion.databases.retrieve({ database_id: databaseId });
     const dbTitle = dbMeta.title?.[0]?.plain_text || "工程標單表格";
+    const dbDescription = dbMeta.description?.map(d => d.plain_text).join("") || "";
+
 
     // 支援分頁抓取所有資料（Notion 預設每頁最多 100 筆）
     let allResults = [];
@@ -87,7 +89,7 @@ module.exports = async (req, res) => {
       WorkType: page.properties.WorkType?.select?.name || "",
       Item: page.properties.Item?.title?.[0]?.plain_text || "",
       Spec: renderRichText(page.properties.Spec?.rich_text || []),
-      Qty: page.properties.Qty?.number ?? null,
+      Qty: page.properties.Qty?.number || 0,
       Unit: page.properties.Unit?.rich_text?.[0]?.plain_text || "",
       UnitPrice: page.properties.UnitPrice?.number || 0,
       Amount: page.properties.Amount?.number ?? (
@@ -98,7 +100,7 @@ module.exports = async (req, res) => {
     }));
 
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.status(200).json({ dbTitle, items: results });
+    res.status(200).json({ dbTitle, dbDescription, items: results });
   } catch (error) {
     console.error("Notion API error:", error);
     res.status(500).json({ error: "Failed to fetch Notion data" });
