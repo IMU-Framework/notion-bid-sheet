@@ -62,6 +62,10 @@ function getCssColor(name, isBg = false) {
 // API handler
 module.exports = async (req, res) => {
   try {
+    // 讀取 Notion 資料庫名稱
+    const dbMeta = await notion.databases.retrieve({ database_id: databaseId });
+    const dbTitle = dbMeta.title?.[0]?.plain_text || "工程標單表格";
+
     // 支援分頁抓取所有資料（Notion 預設每頁最多 100 筆）
     let allResults = [];
     let cursor = undefined;
@@ -89,11 +93,12 @@ module.exports = async (req, res) => {
       Amount: page.properties.Amount?.number ?? (
         (page.properties.Qty?.number || 0) * (page.properties.UnitPrice?.number || 0)
       ),
+      Order: page.properties.Order?.number ?? null,
       Updated: page.last_edited_time || ""
     }));
 
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.status(200).json(results);
+    res.status(200).json({ dbTitle, items: results });
   } catch (error) {
     console.error("Notion API error:", error);
     res.status(500).json({ error: "Failed to fetch Notion data" });
