@@ -3,9 +3,11 @@ fetch("/api/bid")
     if (!res.ok) throw new Error("API 錯誤，狀態碼：" + res.status);
     return res.json();
   })
-  .then(data => {
-    const grouped = groupBy(data, 'WorkType');
-    renderPage(grouped, data);
+  .then(({ dbTitle, items }) => {
+  document.title = dbTitle;
+  document.querySelector("h1").textContent = dbTitle;
+    const grouped = groupBy(items, 'WorkType');
+    renderPage(grouped);
   })
   .catch(err => {
     const container = document.getElementById('table-container');
@@ -26,13 +28,13 @@ function formatMoney(n) {
   return `$${n.toLocaleString("en-US")}`;
 }
 
-function renderPage(groups, fullData) {
+function renderPage(groups) {
   const container = document.getElementById('table-container');
   container.innerHTML = "";
 
-  const updateDate = fullData[0]?.Updated?.slice(0, 10) || "";
+  const allItems = Object.values(groups).flat();
+  const updateDate = allItems[0]?.Updated?.slice(0, 10) || "";
 
-  // 篩選器區塊
   const filterBox = document.createElement("div");
   filterBox.className = "mb-4 flex flex-wrap gap-2 items-center";
 
@@ -80,6 +82,13 @@ function renderPage(groups, fullData) {
     Object.entries(groups).forEach(([WorkType, items]) => {
       if (!selectedTypes.has(WorkType) || items.length === 0) return;
 
+      const sortedItems = [...items].sort((a, b) => {
+        if (a.Order != null && b.Order != null) return a.Order - b.Order;
+        if (a.Order != null) return -1;
+        if (b.Order != null) return 1;
+        return 0;
+      });
+
       const section = document.createElement("details");
       section.setAttribute("open", "true");
       section.className = "avoid-break";
@@ -94,7 +103,7 @@ function renderPage(groups, fullData) {
       const table = document.createElement("table");
       table.className = "w-full border border-gray-300 text-sm";
 
-      const groupTotal = items.reduce((sum, item) => sum + (item.Amount ?? 0), 0);
+      const groupTotal = sortedItems.reduce((sum, item) => sum + (item.Amount ?? 0), 0);
       totalAmount += groupTotal;
 
       table.innerHTML = `
@@ -110,7 +119,7 @@ function renderPage(groups, fullData) {
           </tr>
         </thead>
         <tbody>
-          ${items.map((item, i) => `
+          ${sortedItems.map((item, i) => `
             <tr>
               <td class="border px-2 py-1 text-center">${i + 1}</td>
               <td class="border px-2 py-1">${item.Item}</td>
@@ -134,7 +143,6 @@ function renderPage(groups, fullData) {
       tableContainer.appendChild(section);
     });
 
-    // ✅ 修正位置：放在 group loop 結束後
     summaryBox.innerHTML = `<strong>金額總計：</strong> ${formatMoney(totalAmount)}`;
   }
 
