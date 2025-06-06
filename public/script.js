@@ -4,8 +4,8 @@ fetch("/api/bid")
     return res.json();
   })
   .then(({ dbTitle, items }) => {
-  document.title = dbTitle;
-  document.querySelector("h1").textContent = dbTitle;
+    document.title = dbTitle; // ✅ 同步 <title>
+    document.querySelector("h1").textContent = dbTitle;
     const grouped = groupBy(items, 'WorkType');
     renderPage(grouped);
   })
@@ -75,11 +75,16 @@ function renderPage(groups) {
   updateTag.textContent = `最後更新時間：${updateDate}`;
   container.appendChild(updateTag);
 
+  const chineseNumbers = [
+    "一", "二", "三", "四", "五", "六", "七", "八", "九", "十",
+    "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十"
+  ];
+
   function renderTables() {
     tableContainer.innerHTML = "";
     let totalAmount = 0;
 
-    Object.entries(groups).forEach(([WorkType, items]) => {
+    Object.entries(groups).forEach(([WorkType, items], index) => {
       if (!selectedTypes.has(WorkType) || items.length === 0) return;
 
       const sortedItems = [...items].sort((a, b) => {
@@ -95,7 +100,7 @@ function renderPage(groups) {
 
       const summary = document.createElement("summary");
       summary.className = "mt-4 cursor-pointer font-semibold bg-gray-100 px-4 py-1 rounded";
-      summary.textContent = WorkType;
+      summary.textContent = `${chineseNumbers[index] || (index + 1)}、${WorkType}`;
 
       const wrapper = document.createElement("div");
       wrapper.className = "overflow-x-auto mt-1";
@@ -124,7 +129,9 @@ function renderPage(groups) {
               <td class="border px-2 py-1 text-center">${i + 1}</td>
               <td class="border px-2 py-1">${item.Item}</td>
               <td class="border px-2 py-1">${item.Spec}</td>
-              <td class="border px-2 py-1 text-right ${item.Qty == null ? 'text-gray-400 italic' : ''}">${item.Qty == null ? '待定' : item.Qty}</td>
+              <td class="border px-2 py-1 text-right ${item.Qty == null ? 'text-gray-400 italic' : ''}">
+                ${item.Qty == null ? '待定' : item.Qty}
+              </td>
               <td class="border px-2 py-1">${item.Unit}</td>
               <td class="border px-2 py-1 text-right">${formatMoney(item.UnitPrice)}</td>
               <td class="border px-2 py-1 text-right">${formatMoney(item.Amount)}</td>
