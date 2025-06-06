@@ -65,7 +65,7 @@ module.exports = async (req, res) => {
     // 讀取 Notion 資料庫名稱
     const dbMeta = await notion.databases.retrieve({ database_id: databaseId });
     const dbTitle = dbMeta.title?.[0]?.plain_text || "工程標單表格";
-    const dbDescription = dbMeta.description?.map(d => d.plain_text).join("") || "";
+    const dbDescription = renderRichText(dbMeta.description || []);
 
 
     // 支援分頁抓取所有資料（Notion 預設每頁最多 100 筆）
