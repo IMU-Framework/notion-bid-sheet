@@ -73,10 +73,8 @@ function renderPage(groups) {
   const tableContainer = document.createElement("div");
   container.appendChild(tableContainer);
 
-  const updateTag = document.createElement("p");
-  updateTag.className = "text-xs text-gray-400 text-right sticky top-0 z-50 bg-white pr-4";
-  updateTag.textContent = `最後更新時間：${updateDate}`;
-  container.appendChild(updateTag);
+  const updateTag = document.getElementById("update-time");
+  if (updateTag) updateTag.textContent = `最後更新時間：${updateDate}`;
 
   const chineseNumbers = [
     "一", "二", "三", "四", "五", "六", "七", "八", "九", "十",
