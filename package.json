@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "license": "MIT",
   "dependencies": {
-    "@notionhq/client": "^2.2.1"
+    "@notionhq/client": "^3.1.3"
   }
 }
