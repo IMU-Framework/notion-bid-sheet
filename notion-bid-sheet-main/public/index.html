@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IMU工程項目表</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+  @media print {
+    @page {
+      size: A4;
+      margin: 14mm 14mm 14mm 14mm; /* moderate 邊界 */
+    }
+    body {
+      margin: 0 !important;
+      -webkit-print-color-adjust: exact;
+    }
+    summary::marker,
+    summary::-webkit-details-marker {
+      display: none;
+    }
+    details:not([open]) {
+      display: block !important;
+    }
+
+    /* ✅ 避免群組斷頁，只顯示表頭無項目 */
+    details.avoid-break {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    /* ✅ 保護表格表頭與第一列不被拆開 */
+    table {
+      page-break-inside: auto;
+    }
+    thead {
+      display: table-header-group;
+    }
+    tr {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    /* ✅ 避免標題與更新時間被拆頁 */
+    .flex-title-bar {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+  }
+</style>
+</head>
+<body class="bg-white text-gray-800 p-6 print:p-0">
+  <div class="max-w-5xl mx-auto print-a4 space-y-4">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-2 flex-title-bar">
+      <h1 class="text-2xl font-bold break-words">IMU工程項目表</h1>
+      <p id="update-time" class="text-xs text-gray-400 whitespace-nowrap"></p>
+    </div>
+    <div id="db-description" class="text-xs text-gray-600 mb-6 leading-relaxed"></div>
+    <div id="table-container" class="space-y-4"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
