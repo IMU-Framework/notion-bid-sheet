@@ -129,8 +129,7 @@ function renderPage(groups) {
         <tbody>
           ${sortedItems.map((item, i) => `
             <tr>
-              // <td class="border px-2 py-1 text-center">${i + 1}</td> //
-              <td class="border px-2 py-1 text-center">{item.Order}</td>
+              <td class="border px-2 py-1 text-center">${item.Order}</td>
               <td class="border px-2 py-1">${item.Item}</td>
               <td class="border px-2 py-1">${item.Spec}</td>
               <td class="border px-2 py-1 text-right ${item.Qty == null ? 'text-gray-400 italic' : ''}">
