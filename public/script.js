@@ -146,13 +146,13 @@ function renderPage(groups) {
       table.innerHTML = `
         <thead class="bg-gray-100">
           <tr>
-            <th class="border px-2 py-1 w-[45px]">#</th>
-            <th class="border px-2 py-1 min-w-[4em] w-[16%]">工程項目</th>
+            <th class="border px-1 py-1 w-[40px]">#</th>
+            <th class="border px-2 py-1 w-[16%]">工程項目</th>
             <th class="border px-2 py-1 w-[40%]">規格描述</th>
-            <th class="border px-2 py-1 w-[20%]">備註</th>
+            <th class="border px-2 py-1">備註</th>
             <th class="border px-2 py-1 text-right w-[45px]">數量</th>
             <th class="border px-2 py-1 w-[40px]">單位</th>
-            <th class="border px-2 py-1">參考連結</th>
+            <th class="border px-2 py-1 w-[45px]">參考連結</th>
             </tr>
         </thead>
         <tbody>
@@ -166,7 +166,7 @@ function renderPage(groups) {
                 ${item.Qty == null ? '待定' : item.Qty}
               </td>
               <td class="border px-2 py-1">${item.Unit}</td>
-              <td class="border px-2 py-1">${item.Reference}</td>
+              <td class="border px-2 py-1 text-small">${item.Reference}</td>
             </tr>
           `).join('')}
         </tbody>
