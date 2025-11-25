@@ -150,22 +150,22 @@ function renderPage(groups) {
             <th class="border px-2 py-1 w-[16%] text-xs">工程項目</th>
             <th class="border px-2 py-1 w-[40%] text-xs">規格描述</th>
             <th class="border px-2 py-1 text-xs">備註</th>
-            <th class="border px-2 py-1 text-right w-[45px]">數量</th>
-            <th class="border px-2 py-1 w-[45px]">單位</th>
-            <th class="border px-2 py-1 w-[50px]">連結</th>
+            <th class="border px-2 py-1 text-right w-[45px] text-xs">數量</th>
+            <th class="border px-2 py-1 w-[45px] text-xs">單位</th>
+            <th class="border px-2 py-1 w-[50px] text-xs">連結</th>
             </tr>
         </thead>
         <tbody>
           ${sortedItems.map((item, i) => `
             <tr>
               <td class="border px-2 py-1 text-xs text-center">${item.Order}</td>
-              <td class="border px-2 py-1">${item.Item}</td>
-              <td class="border px-2 py-1 text-[10px]">${item.Spec}</td>
-              <td class="border px-2 py-1 text-[10px]">${item.Note}</td>
-              <td class="border px-2 py-1 text-right ${item.Qty == null ? 'text-gray-400 italic' : ''}">
+              <td class="border px-2 py-1 text-s">${item.Item}</td>
+              <td class="border px-2 py-1 text-xs">${item.Spec}</td>
+              <td class="border px-2 py-1 text-xs">${item.Note}</td>
+              <td class="border px-2 py-1 text-right text-xs ${item.Qty == null ? 'text-gray-400 italic' : ''}">
                 ${item.Qty == null ? '待定' : item.Qty}
               </td>
-              <td class="border px-2 py-1">${item.Unit}</td>
+              <td class="border px-2 py-1 text-xs">${item.Unit}</td>
               <td class="border px-2 py-1 text-[10px]">${item.Reference}</td>
             </tr>
           `).join('')}
