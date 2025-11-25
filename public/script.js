@@ -146,10 +146,10 @@ function renderPage(groups) {
       table.innerHTML = `
         <thead class="bg-gray-100">
           <tr>
-            <th class="border px-1 py-1 w-[40px]">#</th>
-            <th class="border px-2 py-1 w-[16%]">工程項目</th>
-            <th class="border px-2 py-1 w-[40%]">規格描述</th>
-            <th class="border px-2 py-1">備註</th>
+            <th class="border px-1 py-1 w-[40px] text-xs">#</th>
+            <th class="border px-2 py-1 w-[16%] text-xs">工程項目</th>
+            <th class="border px-2 py-1 w-[40%] text-xs">規格描述</th>
+            <th class="border px-2 py-1 text-xs">備註</th>
             <th class="border px-2 py-1 text-right w-[45px]">數量</th>
             <th class="border px-2 py-1 w-[45px]">單位</th>
             <th class="border px-2 py-1 w-[50px]">連結</th>
@@ -158,7 +158,7 @@ function renderPage(groups) {
         <tbody>
           ${sortedItems.map((item, i) => `
             <tr>
-              <td class="border px-2 py-1 text-[10px] text-center">${item.Order}</td>
+              <td class="border px-2 py-1 text-xs text-center">${item.Order}</td>
               <td class="border px-2 py-1">${item.Item}</td>
               <td class="border px-2 py-1 text-[10px]">${item.Spec}</td>
               <td class="border px-2 py-1 text-[10px]">${item.Note}</td>
