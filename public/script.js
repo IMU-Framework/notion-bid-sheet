@@ -138,6 +138,10 @@ function renderPage(groups) {
             // <th class="border px-2 py-1 text-right w-[80px]">價格</th>
             // <td class="border px-2 py-1 text-right">${formatMoney(item.UnitPrice)}</td>
             // <td class="border px-2 py-1 text-right">${formatMoney(item.Amount)}</td>
+          // <tr class="font-semibold bg-gray-50">
+          //   <td colspan="6" class="text-right border px-2 py-1">小計</td>
+          //   <td class="border px-2 py-1 text-right">${formatMoney(groupTotal)}</td>
+          // </tr>
         
       table.innerHTML = `
         <thead class="bg-gray-100">
@@ -163,10 +167,6 @@ function renderPage(groups) {
               <td class="border px-2 py-1">${item.Reference}</td>
             </tr>
           `).join('')}
-          <tr class="font-semibold bg-gray-50">
-            <td colspan="6" class="text-right border px-2 py-1">小計</td>
-            <td class="border px-2 py-1 text-right">${formatMoney(groupTotal)}</td>
-          </tr>
         </tbody>
       `;
 
