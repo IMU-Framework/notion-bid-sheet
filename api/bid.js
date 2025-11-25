@@ -119,6 +119,10 @@ module.exports = async (req, res) => {
       cursor = response.has_more ? response.next_cursor : null;
     } while (cursor);
 
+    // debug：印出原始 Reference JSON
+    console.log("===== RAW REFERENCE SAMPLE =====");
+    console.log(JSON.stringify(allResults[0]?.properties.Reference, null, 2));
+    
     // 整理欄位：對應 Notion DB 欄位，若無值則 fallback 處理
     const results = allResults.map((page) => ({
       Stage: page.properties.Stage?.select?.name || "",
@@ -137,6 +141,9 @@ module.exports = async (req, res) => {
       Updated: page.last_edited_time || ""
     }));
 
+    console.log("===== PARSED REFERENCE SAMPLE =====");
+    console.log(results[0]?.Reference);
+
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.status(200).json({ dbTitle, dbDescription, items: results });
   } catch (error) {
@@ -144,4 +151,3 @@ module.exports = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch Notion data" });
   }
 };
-console.log("Reference RAW:", JSON.stringify(page.properties.Reference, null, 2));
