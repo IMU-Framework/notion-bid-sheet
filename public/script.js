@@ -33,7 +33,20 @@ function formatMoney(n) {
   return `$${n.toLocaleString("en-US")}`;
 }
 
+  const WORKTYPE_ORDER = [
+    "拆除工程",
+    "泥作工程",
+    "木作工程",
+    "油漆工程",
+    "水電工程",
+    "玻璃工程",
+    "地坪工程",
+    "照明工程",
+    "雜項"
+  ];
+
 function renderPage(groups) {
+  
   const container = document.getElementById('table-container');
   container.innerHTML = "";
 
@@ -43,7 +56,14 @@ function renderPage(groups) {
   const filterBox = document.createElement("div");
   filterBox.className = "mb-4 flex flex-wrap gap-2 items-center";
 
-  const activeWorkTypes = Object.keys(groups).filter(type => groups[type].length > 0);
+  const activeWorkTypes = Object.keys(groups)
+  .filter(type => groups[type].length > 0)
+  .sort((a, b) => {
+    const indexA = WORKTYPE_ORDER.indexOf(a);
+    const indexB = WORKTYPE_ORDER.indexOf(b);
+    return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
+  });
+  
   let selectedTypes = new Set(activeWorkTypes);
 
   activeWorkTypes.forEach(type => {
@@ -82,20 +102,28 @@ function renderPage(groups) {
     "一", "二", "三", "四", "五", "六", "七", "八", "九", "十",
     "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十"
   ];
-
+    
   function renderTables() {
     tableContainer.innerHTML = "";
     let totalAmount = 0;
     let visibleGroupCount = 0;
 
-    Object.entries(groups).forEach(([WorkType, items]) => {
+    const sortedGroupEntries = Object.entries(groups).sort(([a], [b]) => {
+      const indexA = WORKTYPE_ORDER.indexOf(a);
+      const indexB = WORKTYPE_ORDER.indexOf(b);
+
+      // 不在清單內的排在最後
+      return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
+      });
+      
+      sortedGroupEntries.forEach(([WorkType, items]) => {
       if (!selectedTypes.has(WorkType) || items.length === 0) return;
 
-      const sortedItems = [...items].sort((a, b) => {
-        if (a.Order != null && b.Order != null) return a.Order - b.Order;
-        if (a.Order != null) return -1;
-        if (b.Order != null) return 1;
-        return 0;
+    const sortedItems = [...items].sort((a, b) => {
+      if (a.Order != null && b.Order != null) return a.Order - b.Order;
+      if (a.Order != null) return -1;
+      if (b.Order != null) return 1;
+      return 0;
       });
 
       const section = document.createElement("details");
