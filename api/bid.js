@@ -144,3 +144,4 @@ module.exports = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch Notion data" });
   }
 };
+console.log("Reference RAW:", JSON.stringify(page.properties.Reference, null, 2));
