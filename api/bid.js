@@ -86,6 +86,7 @@ module.exports = async (req, res) => {
 
     // 整理欄位：對應 Notion DB 欄位，若無值則 fallback 處理
     const results = allResults.map((page) => ({
+      Stage: page.properties.Stage?.select?.name || "",
       WorkType: page.properties.WorkType?.select?.name || "",
       Item: page.properties.Item?.title?.[0]?.plain_text || "",
       Spec: renderRichText(page.properties.Spec?.rich_text || []),
