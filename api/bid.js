@@ -53,20 +53,21 @@ function renderRollupRichText(rollupProp) {
   const roll = rollupProp.rollup;
   if (!roll || roll.type !== "array" || !Array.isArray(roll.array)) return "";
 
-  // 把 rollup 裡每一個元素的 rich_text/title 抽出來
-  const richTextBlocks = roll.array.flatMap(item => {
-    if (item.type === "rich_text") {
-      // rollup 來源是 rich_text 型
-      return item.rich_text || [];
+  // 將「每一個 unique value」各自轉成一段 HTML
+  const htmlChunks = roll.array.map(item => {
+    if (item.type === "rich_text" && Array.isArray(item.rich_text)) {
+      // 來源是 rich_text 欄位
+      return renderRichText(item.rich_text);
     }
-    if (item.type === "title") {
-      // rollup 來源是 title 型
-      return item.title || [];
+    if (item.type === "title" && Array.isArray(item.title)) {
+      // 來源是 title 欄位
+      return renderRichText(item.title);
     }
-    return [];
-  });
+    return "";
+  }).filter(Boolean); // 去掉空字串
 
-  return renderRichText(richTextBlocks);
+  // 每個 unique value 之間用 <br> 分隔（或你想改成 "、" 也可以）
+  return htmlChunks.join("<br>");
 }
 
 // 對應 Notion 顏色名稱轉 CSS 色碼
