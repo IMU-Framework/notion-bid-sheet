@@ -46,6 +46,29 @@ function renderRichText(blocks) {
   }).join("");
 }
 
+// 將 Rollup轉為rich_text
+function renderRollupRichText(rollupProp) {
+  if (!rollupProp || rollupProp.type !== "rollup") return "";
+
+  const roll = rollupProp.rollup;
+  if (!roll || roll.type !== "array" || !Array.isArray(roll.array)) return "";
+
+  // 把 rollup 裡每一個元素的 rich_text/title 抽出來
+  const richTextBlocks = roll.array.flatMap(item => {
+    if (item.type === "rich_text") {
+      // rollup 來源是 rich_text 型
+      return item.rich_text || [];
+    }
+    if (item.type === "title") {
+      // rollup 來源是 title 型
+      return item.title || [];
+    }
+    return [];
+  });
+
+  return renderRichText(richTextBlocks);
+}
+
 // 對應 Notion 顏色名稱轉 CSS 色碼
 function getCssColor(name, isBg = false) {
   const map = {
@@ -98,7 +121,7 @@ module.exports = async (req, res) => {
         (page.properties.Qty?.number || 0) * (page.properties.UnitPrice?.number || 0)
       ),
       Order: page.properties.Order?.number ?? null,
-      Reference: renderRichText(page.properties.Reference?.rich_text || []),
+      Reference: renderRollupRichText(page.properties.Reference),
       Updated: page.last_edited_time || ""
     }));
 
