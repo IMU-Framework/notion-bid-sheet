@@ -53,20 +53,37 @@ function renderRollupRichText(rollupProp) {
   const roll = rollupProp.rollup;
   if (!roll || roll.type !== "array" || !Array.isArray(roll.array)) return "";
 
-  // 將「每一個 unique value」各自轉成一段 HTML
-  const htmlChunks = roll.array.map(item => {
-    if (item.type === "rich_text" && Array.isArray(item.rich_text)) {
-      // 來源是 rich_text 欄位
-      return renderRichText(item.rich_text);
-    }
-    if (item.type === "title" && Array.isArray(item.title)) {
-      // 來源是 title 欄位
-      return renderRichText(item.title);
-    }
-    return "";
-  }).filter(Boolean); // 去掉空字串
+  const seen = new Set();      // 用來記錄「已出現過的文字」
+  const htmlChunks = [];       // 每一筆 unique value 轉成一段 HTML
 
-  // 每個 unique value 之間用 <br> 分隔（或你想改成 "、" 也可以）
+  for (const item of roll.array) {
+    let blocks = null;
+
+    if (item.type === "rich_text" && Array.isArray(item.rich_text)) {
+      blocks = item.rich_text;
+    } else if (item.type === "title" && Array.isArray(item.title)) {
+      blocks = item.title;
+    } else {
+      continue; // 不是這兩種型態就跳過
+    }
+
+    // 用 plain_text 來當「去重 key」，不動裡面的逗號
+    const key = (blocks || [])
+      .map(b => b.plain_text || "")
+      .join("");
+
+    const trimmedKey = key.trim();
+    if (!trimmedKey) continue;        // 空字串就忽略
+    if (seen.has(trimmedKey)) continue; // 已經出現過就跳過
+
+    seen.add(trimmedKey);
+
+    // 真正顯示的內容還是交給 renderRichText（保留粗體/超連結/顏色）
+    const html = renderRichText(blocks);
+    if (html) htmlChunks.push(html);
+  }
+
+  // 每個「唯一值」之間用 <br> 換行，原文字中的逗號完全不動
   return htmlChunks.join("<br>");
 }
 
