@@ -53,32 +53,20 @@ function renderRollupRichText(rollupProp) {
   const roll = rollupProp.rollup;
   if (!roll || roll.type !== "array" || !Array.isArray(roll.array)) return "";
 
-  const richTextBlocks = [];
-  const urlLinks = [];
-
-  for (const item of roll.array) {
-    const { type } = item;
-    const value = item[type];
-
-    // 1) 來源是 rich_text 或 title → value 會是 array，直接塞進 richTextBlocks
-    if ((type === "rich_text" || type === "title") && Array.isArray(value)) {
-      richTextBlocks.push(...value);
-      continue;
+  // 把 rollup 裡每一個元素的 rich_text/title 抽出來
+  const richTextBlocks = roll.array.flatMap(item => {
+    if (item.type === "rich_text") {
+      // rollup 來源是 rich_text 型
+      return item.rich_text || [];
     }
-
-    // 2) 來源是 url → value 是字串，自己組 a tag
-    if (type === "url" && typeof value === "string" && value.trim() !== "") {
-      urlLinks.push(
-        `<a href="${value}" target="_blank" class="underline text-blue-600">${value}</a>`
-      );
+    if (item.type === "title") {
+      // rollup 來源是 title 型
+      return item.title || [];
     }
-  }
+    return [];
+  });
 
-  const richTextHtml = richTextBlocks.length ? renderRichText(richTextBlocks) : "";
-  const urlHtml = urlLinks.join("<br>");
-
-  // 把兩種來源合併（有什麼顯示什麼）
-  return [richTextHtml, urlHtml].filter(Boolean).join("<br>");
+  return renderRichText(richTextBlocks);
 }
 
 // 對應 Notion 顏色名稱轉 CSS 色碼
