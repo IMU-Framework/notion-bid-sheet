@@ -46,7 +46,7 @@ function renderRichText(blocks) {
   }).join("");
 }
 
-// 將 Rollup轉為rich_text
+// 將 Rollup 轉為 rich_text，再丟給 renderRichText
 function renderRollupRichText(rollupProp) {
   if (!rollupProp || rollupProp.type !== "rollup") return "";
 
@@ -60,13 +60,13 @@ function renderRollupRichText(rollupProp) {
     const { type } = item;
     const value = item[type];
 
-    // 1) rich_text 或 title → 收集起來用 renderRichText
+    // 1) 來源是 rich_text 或 title → value 會是 array，直接塞進 richTextBlocks
     if ((type === "rich_text" || type === "title") && Array.isArray(value)) {
       richTextBlocks.push(...value);
       continue;
     }
 
-    // 2) url → 用簡單 a tag 自己組
+    // 2) 來源是 url → value 是字串，自己組 a tag
     if (type === "url" && typeof value === "string" && value.trim() !== "") {
       urlLinks.push(
         `<a href="${value}" target="_blank" class="underline text-blue-600">${value}</a>`
@@ -77,6 +77,7 @@ function renderRollupRichText(rollupProp) {
   const richTextHtml = richTextBlocks.length ? renderRichText(richTextBlocks) : "";
   const urlHtml = urlLinks.join("<br>");
 
+  // 把兩種來源合併（有什麼顯示什麼）
   return [richTextHtml, urlHtml].filter(Boolean).join("<br>");
 }
 
