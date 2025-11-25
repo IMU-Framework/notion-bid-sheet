@@ -134,6 +134,11 @@ function renderPage(groups) {
       const groupTotal = sortedItems.reduce((sum, item) => sum + (item.Amount ?? 0), 0);
       totalAmount += groupTotal;
 
+            // <th class="border px-2 py-1 text-right w-[65px]">單價</th>
+            // <th class="border px-2 py-1 text-right w-[80px]">價格</th>
+            // <td class="border px-2 py-1 text-right">${formatMoney(item.UnitPrice)}</td>
+            // <td class="border px-2 py-1 text-right">${formatMoney(item.Amount)}</td>
+        
       table.innerHTML = `
         <thead class="bg-gray-100">
           <tr>
@@ -143,9 +148,7 @@ function renderPage(groups) {
             <th class="border px-2 py-1 text-right w-[45px]">數量</th>
             <th class="border px-2 py-1 w-[40px]">單位</th>
             <th class="border px-2 py-1 w-[40px]">參考連結</th>
-            // <th class="border px-2 py-1 text-right w-[65px]">單價</th>
-            // <th class="border px-2 py-1 text-right w-[80px]">價格</th>
-          </tr>
+            </tr>
         </thead>
         <tbody>
           ${sortedItems.map((item, i) => `
@@ -158,8 +161,6 @@ function renderPage(groups) {
               </td>
               <td class="border px-2 py-1">${item.Unit}</td>
               <td class="border px-2 py-1">${item.Reference}</td>
-              // <td class="border px-2 py-1 text-right">${formatMoney(item.UnitPrice)}</td>
-              // <td class="border px-2 py-1 text-right">${formatMoney(item.Amount)}</td>
             </tr>
           `).join('')}
           <tr class="font-semibold bg-gray-50">
