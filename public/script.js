@@ -4,6 +4,8 @@ fetch("/api/bid")
     return res.json();
   })
   .then(({ dbTitle, dbDescription, items }) => {
+   // ✅ 只保留 Stage 為「發包項」的資料
+  const filteredItems = items.filter(item => item.Stage === "發包項");
   document.title = dbTitle;
   document.querySelector("h1").textContent = dbTitle;
 
