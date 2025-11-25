@@ -142,8 +142,9 @@ function renderPage(groups) {
             <th class="border px-2 py-1 w-[35%]">規格描述</th>
             <th class="border px-2 py-1 text-right w-[45px]">數量</th>
             <th class="border px-2 py-1 w-[40px]">單位</th>
-            <th class="border px-2 py-1 text-right w-[65px]">單價</th>
-            <th class="border px-2 py-1 text-right w-[80px]">價格</th>
+            // <th class="border px-2 py-1 text-right w-[65px]">單價</th>
+            // <th class="border px-2 py-1 text-right w-[80px]">價格</th>
+            <th class="border px-2 py-1 w-[40px]">參考連結</th>
           </tr>
         </thead>
         <tbody>
@@ -156,8 +157,9 @@ function renderPage(groups) {
                 ${item.Qty == null ? '待定' : item.Qty}
               </td>
               <td class="border px-2 py-1">${item.Unit}</td>
-              <td class="border px-2 py-1 text-right">${formatMoney(item.UnitPrice)}</td>
-              <td class="border px-2 py-1 text-right">${formatMoney(item.Amount)}</td>
+              // <td class="border px-2 py-1 text-right">${formatMoney(item.UnitPrice)}</td>
+              // <td class="border px-2 py-1 text-right">${formatMoney(item.Amount)}</td>
+              <td class="border px-2 py-1">${item.Reference}</td>
             </tr>
           `).join('')}
           <tr class="font-semibold bg-gray-50">
