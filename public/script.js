@@ -1,4 +1,4 @@
-#import { WORKTYPE_ORDER } from "./worktype-order.js";
+import { WORKTYPE_ORDER } from "./worktype-order.js";
 
 fetch("/api/bid")
   .then(res => {
