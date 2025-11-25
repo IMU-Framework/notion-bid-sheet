@@ -152,13 +152,13 @@ function renderPage(groups) {
             <th class="border px-2 py-1">備註</th>
             <th class="border px-2 py-1 text-right w-[45px]">數量</th>
             <th class="border px-2 py-1 w-[40px]">單位</th>
-            <th class="border px-2 py-1 w-[45px]">參考連結</th>
+            <th class="border px-2 py-1 w-[50px]">參考連結</th>
             </tr>
         </thead>
         <tbody>
           ${sortedItems.map((item, i) => `
             <tr>
-              <td class="border px-2 py-1 text-center">${item.Order}</td>
+              <td class="border px-2 py-1 text-[8px] text-center">${item.Order}</td>
               <td class="border px-2 py-1">${item.Item}</td>
               <td class="border px-2 py-1">${item.Spec}</td>
               <td class="border px-2 py-1">${item.Note}</td>
@@ -166,7 +166,7 @@ function renderPage(groups) {
                 ${item.Qty == null ? '待定' : item.Qty}
               </td>
               <td class="border px-2 py-1">${item.Unit}</td>
-              <td class="border px-2 py-1 text-small">${item.Reference}</td>
+              <td class="border px-2 py-1 text-[8px]">${item.Reference}</td>
             </tr>
           `).join('')}
         </tbody>
