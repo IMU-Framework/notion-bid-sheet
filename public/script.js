@@ -160,7 +160,7 @@ function renderPage(groups) {
             <tr>
               <td class="border px-2 py-1 text-[10px] text-center">${item.Order}</td>
               <td class="border px-2 py-1">${item.Item}</td>
-              <td class="border px-2 py-1 text-[10px]#">${item.Spec}</td>
+              <td class="border px-2 py-1 text-[10px]">${item.Spec}</td>
               <td class="border px-2 py-1 text-[10px]">${item.Note}</td>
               <td class="border px-2 py-1 text-right ${item.Qty == null ? 'text-gray-400 italic' : ''}">
                 ${item.Qty == null ? '待定' : item.Qty}
