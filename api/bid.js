@@ -97,6 +97,7 @@ module.exports = async (req, res) => {
         (page.properties.Qty?.number || 0) * (page.properties.UnitPrice?.number || 0)
       ),
       Order: page.properties.Order?.number ?? null,
+      Reference: renderRichText(page.properties.Reference?.rich_text || []),
       Updated: page.last_edited_time || ""
     }));
 
