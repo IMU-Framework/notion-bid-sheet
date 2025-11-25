@@ -11,7 +11,7 @@ fetch("/api/bid")
 
   const descEl = document.getElementById("db-description");
   if (descEl) descEl.innerHTML = dbDescription;
-    const grouped = groupBy(items, 'WorkType');
+    const grouped = groupBy(filteredItems, 'WorkType');
     renderPage(grouped);
   })
   .catch(err => {
