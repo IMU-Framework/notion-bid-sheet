@@ -1,3 +1,5 @@
+import { WORKTYPE_ORDER } from "./worktype-order.js";
+
 fetch("/api/bid")
   .then(res => {
     if (!res.ok) throw new Error("API 錯誤，狀態碼：" + res.status);
@@ -33,17 +35,17 @@ function formatMoney(n) {
   return `$${n.toLocaleString("en-US")}`;
 }
 
-  const WORKTYPE_ORDER = [
-    "拆除工程",
-    "泥作工程",
-    "木作工程",
-    "油漆工程",
-    "水電工程",
-    "玻璃工程",
-    "地坪工程",
-    "照明工程",
-    "雜項"
-  ];
+  // const WORKTYPE_ORDER = [
+  //   "拆除工程",
+  //   "泥作工程",
+  //   "木作工程",
+  //   "油漆工程",
+  //   "水電工程",
+  //   "玻璃工程",
+  //   "地坪工程",
+  //   "照明工程",
+  //   "雜項"
+  // ];
 
 function renderPage(groups) {
   
