@@ -252,7 +252,7 @@ container.appendChild(filterBox);
             <th class="border px-1 py-1 w-[40px] text-xs">#</th>
             <th class="border px-2 py-1 w-[16%] text-xs">工程項目</th>
             <th class="border px-2 py-1 w-[40%] text-xs">規格描述</th>
-            <th class="border px-2 py-1 text-xs">備註／張號圖號</th>
+            <th class="border px-2 py-1 text-xs">備註／圖面</th>
             <th class="border px-2 py-1 text-right w-[45px] text-xs">數量</th>
             <th class="border px-2 py-1 w-[45px] text-xs">單位</th>
             <th class="border px-2 py-1 w-[80px] text-xs">連結</th>
