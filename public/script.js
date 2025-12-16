@@ -69,7 +69,7 @@ filterBox.appendChild(filterButton);
 // 下拉容器
 const dropdown = document.createElement("div");
 dropdown.className =
-  "absolute z-10 mt-1 w-56 bg-white border rounded shadow hidden";
+  "absolute right-0 z-10 mt-1 w-56 bg-white border rounded shadow hidden";
 
 filterBox.appendChild(dropdown);
 
