@@ -43,9 +43,6 @@ function renderPage(groups) {
   const allItems = Object.values(groups).flat();
   const updateDate = allItems[0]?.Updated?.slice(0, 10) || "";
 
-  const filterBox = document.createElement("div");
-  filterBox.className = "mb-4 flex flex-wrap gap-2 items-center";
-
   const activeWorkTypes = Object.keys(groups)
   .filter(type => groups[type].length > 0)
   .sort((a, b) => {
@@ -54,29 +51,69 @@ function renderPage(groups) {
     return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
   });
   
-  let selectedTypes = new Set(activeWorkTypes);
+// === Filter：多選下拉（checkbox dropdown） ===
+const filterBox = document.createElement("div");
+filterBox.className = "mb-4 relative inline-block";
 
-  activeWorkTypes.forEach(type => {
-    const button = document.createElement("button");
-    button.textContent = type;
-    button.className = "px-3 py-1 text-sm rounded bg-gray-200";
-    button.dataset.type = type;
+// 預設：全部工種都選取
+let selectedTypes = new Set(activeWorkTypes);
 
-    button.addEventListener("click", () => {
-      if (selectedTypes.has(type)) {
-        selectedTypes.delete(type);
-        button.classList.add("line-through", "opacity-50");
-      } else {
-        selectedTypes.add(type);
-        button.classList.remove("line-through", "opacity-50");
-      }
-      renderTables();
-    });
+// 主按鈕
+const filterButton = document.createElement("button");
+filterButton.className =
+  "border px-3 py-1 text-sm rounded bg-white shadow-sm hover:bg-gray-50";
+filterButton.textContent = "篩選工種 ▼";
 
-    filterBox.appendChild(button);
+filterBox.appendChild(filterButton);
+
+// 下拉容器
+const dropdown = document.createElement("div");
+dropdown.className =
+  "absolute z-10 mt-1 w-56 bg-white border rounded shadow hidden";
+
+filterBox.appendChild(dropdown);
+
+// 每個工種 → checkbox
+activeWorkTypes.forEach(type => {
+  const label = document.createElement("label");
+  label.className =
+    "flex items-center gap-2 px-3 py-1 text-sm hover:bg-gray-100 cursor-pointer";
+
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.checked = true; // 預設全選
+  checkbox.value = type;
+
+  checkbox.addEventListener("change", () => {
+    if (checkbox.checked) {
+      selectedTypes.add(type);
+    } else {
+      selectedTypes.delete(type);
+    }
+    renderTables();
   });
 
-  container.appendChild(filterBox);
+  const span = document.createElement("span");
+  span.textContent = type;
+
+  label.appendChild(checkbox);
+  label.appendChild(span);
+  dropdown.appendChild(label);
+});
+
+// 點擊按鈕 → 開 / 關 dropdown
+filterButton.addEventListener("click", e => {
+  e.stopPropagation();
+  dropdown.classList.toggle("hidden");
+});
+
+// 點擊其他地方 → 自動關閉
+document.addEventListener("click", () => {
+  dropdown.classList.add("hidden");
+});
+
+// 掛到頁面
+container.appendChild(filterBox);
 
   const summaryBox = document.createElement("div");
   summaryBox.className = "text-right text-base font-semibold bg-gray-100 py-2 px-4 mb-2";
@@ -159,7 +196,7 @@ function renderPage(groups) {
           ${sortedItems.map((item, i) => `
             <tr>
               <td class="border px-2 py-1 text-xs text-center">${item.Order}</td>
-              <td class="border px-2 py-1 text-s">${item.Item}</td>
+              <td class="border px-2 py-1 text-sm">${item.Item}</td>
               <td class="border px-2 py-1 text-xs">${item.Spec}</td>
               <td class="border px-2 py-1 text-xs">${item.Note}</td>
               <td class="border px-2 py-1 text-right text-xs ${item.Qty == null ? 'text-gray-400 italic' : ''}">
