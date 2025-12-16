@@ -40,6 +40,8 @@ function renderPage(groups) {
   const container = document.getElementById('table-container');
   container.innerHTML = "";
 
+  container.classList.add("flex", "flex-col");
+
   const allItems = Object.values(groups).flat();
   const updateDate = allItems[0]?.Updated?.slice(0, 10) || "";
 
@@ -55,7 +57,7 @@ function renderPage(groups) {
   
 // === Filter：多選下拉（checkbox dropdown） ===
 const filterBox = document.createElement("div");
-filterBox.className = "mb-4 relative inline-block";
+filterBox.className = "mb-4 relative inline-block ml-auto";
 
 // 預設：全部工種都選取
 let selectedTypes = new Set(activeWorkTypes);
