@@ -51,6 +51,8 @@ function renderPage(groups) {
     return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
   });
   
+  const totalCount = activeWorkTypes.length;
+  
 // === Filter：多選下拉（checkbox dropdown） ===
 const filterBox = document.createElement("div");
 filterBox.className = "mb-4 relative inline-block";
@@ -81,9 +83,14 @@ actionBar.className =
 // 全部選取
 const selectAllBtn = document.createElement("button");
 selectAllBtn.type = "button";
-selectAllBtn.textContent = "全部選取";
 selectAllBtn.className = "text-blue-600 hover:underline";
-
+// 初始文字
+  function updateSelectAllLabel() {
+  selectAllBtn.textContent =
+    `全部選取 (${selectedTypes.size} / ${totalCount})`;
+  }
+updateSelectAllLabel(); // 初始化
+  
 selectAllBtn.addEventListener("click", e => {
   e.stopPropagation();
 
@@ -93,7 +100,7 @@ selectAllBtn.addEventListener("click", e => {
   dropdown.querySelectorAll("input[type='checkbox']").forEach(cb => {
     cb.checked = true;
   });
-
+  updateSelectAllLabel();
   renderTables();
 });
 
@@ -112,7 +119,7 @@ clearAllBtn.addEventListener("click", e => {
   dropdown.querySelectorAll("input[type='checkbox']").forEach(cb => {
     cb.checked = false;
   });
-
+  updateSelectAllLabel();
   renderTables();
 });
 
@@ -146,6 +153,7 @@ activeWorkTypes.forEach(type => {
     } else {
       selectedTypes.delete(type);
     }
+    updateSelectAllLabel();
     renderTables();
   });
 
