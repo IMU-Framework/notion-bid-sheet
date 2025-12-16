@@ -57,7 +57,7 @@ function renderPage(groups) {
   
 // === Filter：多選下拉（checkbox dropdown） ===
 const filterBox = document.createElement("div");
-filterBox.className = "mb-4 relative inline-block ml-auto";
+filterBox.className = "mb-4 relative inline-block ml-auto print:hidden";
 
 // 預設：全部工種都選取
 let selectedTypes = new Set(activeWorkTypes);
