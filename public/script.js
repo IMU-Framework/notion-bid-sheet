@@ -83,7 +83,11 @@ activeWorkTypes.forEach(type => {
   checkbox.type = "checkbox";
   checkbox.checked = true; // 預設全選
   checkbox.value = type;
-
+  
+  checkbox.addEventListener("click", e => {
+    e.stopPropagation();
+  });
+    
   checkbox.addEventListener("change", () => {
     if (checkbox.checked) {
       selectedTypes.add(type);
@@ -104,7 +108,7 @@ activeWorkTypes.forEach(type => {
 // 點擊按鈕 → 開 / 關 dropdown
 filterButton.addEventListener("click", e => {
   e.stopPropagation();
-  // dropdown.classList.toggle("hidden");
+  dropdown.classList.toggle("hidden");
 });
 
 // 點擊其他地方 → 自動關閉
