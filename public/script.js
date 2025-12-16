@@ -252,7 +252,7 @@ container.appendChild(filterBox);
             <th class="border px-1 py-1 w-[40px] text-xs">#</th>
             <th class="border px-2 py-1 w-[16%] text-xs">工程項目</th>
             <th class="border px-2 py-1 w-[40%] text-xs">規格描述</th>
-            <th class="border px-2 py-1 text-xs hidden md:table-cell !md:table-cell">備註／參考張號</th>
+            <th class="border px-2 py-1 text-xxs">備註／參考張號</th>
             <th class="border px-2 py-1 text-right w-[45px] text-xs">數量</th>
             <th class="border px-2 py-1 w-[45px] text-xs">單位</th>
             <th class="border px-2 py-1 w-[80px] text-xs">連結</th>
@@ -262,9 +262,9 @@ container.appendChild(filterBox);
           ${sortedItems.map((item, i) => `
             <tr>
               <td class="border px-2 py-1 text-xs text-center">${item.Order}</td>
-              <td class="border px-2 py-1 text-sm">${item.Item}</td>
+              <td class="border px-2 py-1 text-xs">${item.Item}</td>
               <td class="border px-2 py-1 text-xs">${item.Spec}</td>
-              <td class="border px-2 py-1 text-xs hidden md:table-cell !md:table-cell">${item.Note}</td>
+              <td class="border px-2 py-1 text-xxs">${item.Note}</td>
               <td class="border px-2 py-1 text-right text-xs ${item.Qty == null ? 'text-gray-400 italic' : ''}">
                 ${item.Qty == null ? '待定' : item.Qty}
               </td>
