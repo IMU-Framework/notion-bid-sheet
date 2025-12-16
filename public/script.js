@@ -87,6 +87,10 @@ activeWorkTypes.forEach(type => {
   checkbox.addEventListener("click", e => {
     e.stopPropagation();
   });
+
+  dropdown.addEventListener("click", e => {
+  e.stopPropagation();
+  });
     
   checkbox.addEventListener("change", () => {
     if (checkbox.checked) {
