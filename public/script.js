@@ -104,7 +104,7 @@ activeWorkTypes.forEach(type => {
 // 點擊按鈕 → 開 / 關 dropdown
 filterButton.addEventListener("click", e => {
   e.stopPropagation();
-  dropdown.classList.toggle("hidden");
+  // dropdown.classList.toggle("hidden");
 });
 
 // 點擊其他地方 → 自動關閉
