@@ -73,6 +73,54 @@ dropdown.className =
 
 filterBox.appendChild(dropdown);
 
+// === 操作列：全部選取 / 全部清除 ===
+const actionBar = document.createElement("div");
+actionBar.className =
+  "flex justify-between px-3 py-1 text-xs border-b bg-gray-50";
+
+// 全部選取
+const selectAllBtn = document.createElement("button");
+selectAllBtn.type = "button";
+selectAllBtn.textContent = "全部選取";
+selectAllBtn.className = "text-blue-600 hover:underline";
+
+selectAllBtn.addEventListener("click", e => {
+  e.stopPropagation();
+
+  selectedTypes = new Set(activeWorkTypes);
+
+  // 勾選所有 checkbox
+  dropdown.querySelectorAll("input[type='checkbox']").forEach(cb => {
+    cb.checked = true;
+  });
+
+  renderTables();
+});
+
+// 全部清除
+const clearAllBtn = document.createElement("button");
+clearAllBtn.type = "button";
+clearAllBtn.textContent = "全部清除";
+clearAllBtn.className = "text-gray-600 hover:underline";
+
+clearAllBtn.addEventListener("click", e => {
+  e.stopPropagation();
+
+  selectedTypes.clear();
+
+  // 取消所有 checkbox
+  dropdown.querySelectorAll("input[type='checkbox']").forEach(cb => {
+    cb.checked = false;
+  });
+
+  renderTables();
+});
+
+actionBar.appendChild(selectAllBtn);
+actionBar.appendChild(clearAllBtn);
+dropdown.appendChild(actionBar);
+
+  
 // 每個工種 → checkbox
 activeWorkTypes.forEach(type => {
   const label = document.createElement("label");
